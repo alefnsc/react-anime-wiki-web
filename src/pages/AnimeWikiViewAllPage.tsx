@@ -14,7 +14,6 @@ import {
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrUpdate } from "react-icons/gr";
-// import { FiSave } from "react-icons/fi";
 
 import NavbarMenu from "../components/NavbarMenu";
 import CardContainer from "../components/CardContainer";
@@ -22,6 +21,8 @@ import DeleteCardModal from "../components/DeleteCardModal";
 import { deleteCharacter, getCharacters } from "../services/apiService";
 
 import { iCharacter } from "../types/character";
+
+import { useNavigate } from "react-router-dom";
 
 export default function AnimeWikiViewAllPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -199,39 +200,6 @@ export default function AnimeWikiViewAllPage() {
                         </div>
                       </CardBody>
                     </Tab>
-                    {/* <Tab title="Update">
-                      <CardBody>
-                        <Input
-                          type="text"
-                          label="Age"
-                          color="secondary"
-                          variant="underlined"
-                          defaultValue={character.age}
-                          className="max-w-xs pb-4"
-                          size="lg"
-                        />
-                        <Textarea
-                          variant="underlined"
-                          color="secondary"
-                          label="Characteristics"
-                          labelPlacement="outside"
-                          value={character.characteristics}
-                          onChange={(event) =>
-                            handleCharacteristicsChange(event, index)
-                          }
-                          className="w-full max-w-xs pt-4"
-                          size="lg"
-                        />
-                        <Button
-                          className="my-6"
-                          size="sm"
-                          color="secondary"
-                          onClick={() => handleUpdateCharacter(character.id)}
-                        >
-                          <FiSave className="w-6 h-6" />
-                        </Button>
-                      </CardBody>
-                    </Tab> */}
                   </Tabs>
                   <Divider />
                   <CardBody className="flex flex-row items-center justify-center space-x-4">

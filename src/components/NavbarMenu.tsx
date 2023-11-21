@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface iNavbarMenuProps {
   searchValue?: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchValue?: React.Dispatch<React.SetStateAction<string>>;
   search?: boolean;
 }
 
@@ -79,7 +79,7 @@ export default function NavbarMenu(props: iNavbarMenuProps) {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" justify="end">
-        {props.search && (
+        {props.search && props.setSearchValue && (
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
@@ -93,7 +93,9 @@ export default function NavbarMenu(props: iNavbarMenuProps) {
             startContent={<CiSearch className="w-6 h-6" />}
             type="search"
             value={props.searchValue}
-            onChange={(e) => props.setSearchValue(e.target.value)}
+            onChange={(e) =>
+              props.setSearchValue && props.setSearchValue(e.target.value)
+            }
           />
         )}
       </NavbarContent>
