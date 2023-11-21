@@ -13,7 +13,7 @@ import { iCharacter } from "../pages/AnimeWiki";
 interface iCardContainerProps {
   isOpen: boolean;
   onOpenChange: () => void;
-  handleDeleteCharacter: (characterId: string) => void;
+  handleDeleteCharacter: (characterId: number) => void;
   character: iCharacter;
 }
 

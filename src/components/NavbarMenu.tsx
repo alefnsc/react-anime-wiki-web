@@ -8,7 +8,12 @@ import {
 } from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 
-export default function NavbarMenu() {
+interface iNavbarMenuProps {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function NavbarMenu(props: iNavbarMenuProps) {
   return (
     <Navbar className="border-b-1">
       <NavbarBrand>
@@ -46,6 +51,8 @@ export default function NavbarMenu() {
           size="sm"
           startContent={<CiSearch className="w-6 h-6" />}
           type="search"
+          value={props.searchValue}
+          onChange={(e) => props.setSearchValue(e.target.value)}
         />
       </NavbarContent>
     </Navbar>
