@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Card,
@@ -8,34 +8,22 @@ import {
   Divider,
   Tabs,
   Tab,
-  Input,
-  Textarea,
   Button,
   useDisclosure,
 } from "@nextui-org/react";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { GrUpdate } from "react-icons/gr";
 // import { FiSave } from "react-icons/fi";
 
 import NavbarMenu from "../components/NavbarMenu";
 import CardContainer from "../components/CardContainer";
 import DeleteCardModal from "../components/DeleteCardModal";
 import { deleteCharacter, getCharacters } from "../services/apiService";
-export interface iCharacter {
-  id: number;
-  name: string;
-  anime: string;
-  age: string;
-  characteristics: string;
-  photo_url: string;
-  release: number;
-  director: string;
-  episodes: string;
-  publication: string;
-  description: string;
-}
 
-export default function AnimeWiki() {
+import { iCharacter } from "../types/character";
+
+export default function AnimeWikiViewAllPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [allCharacters, setAllCharacters] = useState<iCharacter[]>([]);
   const [filteredCharacters, setFilteredCharacters] = useState<iCharacter[]>(
@@ -49,10 +37,7 @@ export default function AnimeWiki() {
     console.log("Deleting character with ID:", characterId);
     try {
       await deleteCharacter(characterId);
-      const filteredCharacters = allCharacters.filter(
-        (character) => character.id !== characterId
-      );
-      setAllCharacters(filteredCharacters);
+      setAllCharacters([]);
     } catch (error) {
       console.error("Error deleting character:", error);
     }
@@ -77,6 +62,7 @@ export default function AnimeWiki() {
   // }
 
   useEffect(() => {
+    if (allCharacters.length > 0) return;
     async function getApiCharacters() {
       const response = await getCharacters();
       const data = [...response];
@@ -116,7 +102,11 @@ export default function AnimeWiki() {
 
   return (
     <>
-      <NavbarMenu searchValue={searchValue} setSearchValue={setSearchValue} />
+      <NavbarMenu
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        search={true}
+      />
       {characterForDeletion && (
         <DeleteCardModal
           isOpen={isOpen}
@@ -142,11 +132,10 @@ export default function AnimeWiki() {
                 <CardBody className="flex flex-col items-center justify-center">
                   {" "}
                   <Image
+                    className="h-full max-h-40  object-contain"
                     alt={character.name}
-                    height={150}
                     radius="sm"
-                    src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.photo_url}`}
-                    width={150}
+                    src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.prefix}.jpeg`}
                   />
                 </CardBody>
 
@@ -245,15 +234,23 @@ export default function AnimeWiki() {
                     </Tab> */}
                   </Tabs>
                   <Divider />
-                  <CardBody className="flex flex-col items-center justify-center">
+                  <CardBody className="flex flex-row items-center justify-center space-x-4">
                     <Button
-                      size="sm"
+                      size="md"
                       variant="ghost"
                       color="secondary"
+                      onClick={() => 0}
+                    >
+                      <GrUpdate className="w-4 h-4" /> Update
+                    </Button>
+                    <Button
+                      size="md"
+                      variant="ghost"
+                      color="danger"
                       onPress={onOpen}
                       onClick={() => handleSetCharacterForDeletion(character)}
                     >
-                      <RiDeleteBin6Line className="w-6 h-6" />
+                      <RiDeleteBin6Line className="w-4 h-4" /> Delete
                     </Button>
                   </CardBody>
                 </CardBody>

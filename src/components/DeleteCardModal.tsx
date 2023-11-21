@@ -9,7 +9,7 @@ import {
 
 import { CiWarning } from "react-icons/ci";
 
-import { iCharacter } from "../pages/AnimeWiki";
+import { iCharacter } from "../pages/AnimeWikiViewAllPage";
 interface iCardContainerProps {
   isOpen: boolean;
   onOpenChange: () => void;
