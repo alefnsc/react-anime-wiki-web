@@ -9,19 +9,18 @@ import {
 
 import { CiWarning } from "react-icons/ci";
 
+import { iCharacter } from "../pages/AnimeWiki";
 interface iCardContainerProps {
   isOpen: boolean;
   onOpenChange: () => void;
   handleDeleteCharacter: (characterId: string) => void;
-  characterName: string;
-  characterId: string;
+  character: iCharacter;
 }
 
 export default function DeleteCardModal({
   isOpen,
   onOpenChange,
-  characterName,
-  characterId,
+  character,
   handleDeleteCharacter,
 }: iCardContainerProps) {
   return (
@@ -39,7 +38,7 @@ export default function DeleteCardModal({
           <>
             <ModalHeader className="flex flex-row items-center  gap-1">
               <CiWarning className="text-red-700 w-7 h-7 space-x-6" />
-              Delete {characterName}
+              Delete {character.name}
             </ModalHeader>
             <ModalBody>
               <p>Are you sure that you want to delete this character?</p>
@@ -52,7 +51,7 @@ export default function DeleteCardModal({
               <Button
                 color="secondary"
                 onPress={() => {
-                  handleDeleteCharacter(characterId);
+                  handleDeleteCharacter(character.id);
                   onOpenChange();
                 }}
               >

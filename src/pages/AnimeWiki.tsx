@@ -20,19 +20,20 @@ import NavbarMenu from "../components/NavbarMenu";
 import CardContainer from "../components/CardContainer";
 import DeleteCardModal from "../components/DeleteCardModal";
 import { getCharacters } from "../services/apiService";
+export interface iCharacter {
+  id: string;
+  name: string;
+  anime: string;
+  age: string;
+  characteristics: string;
+  photo_url: string;
+}
 
 export default function AnimeWiki() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [allCharacters, setAllCharacters] = useState<iCharacter[]>([]);
-
-  interface iCharacter {
-    id: string;
-    name: string;
-    anime: string;
-    age: string;
-    characteristics: string;
-    photo_url: string;
-  }
+  const [characterForDeletion, setCharacterForDeletion] =
+    useState<iCharacter>();
 
   function handleDeleteCharacter(characterId: string) {
     console.log("Deleting character with ID:", characterId);
@@ -40,6 +41,10 @@ export default function AnimeWiki() {
       (character) => character.id !== characterId
     );
     setAllCharacters(filteredCharacters);
+  }
+
+  function handleSetCharacterForDeletion(character: iCharacter) {
+    return setCharacterForDeletion(character);
   }
 
   useEffect(() => {
@@ -54,19 +59,22 @@ export default function AnimeWiki() {
   return (
     <>
       <NavbarMenu />
-
+      {characterForDeletion && (
+        <DeleteCardModal
+          isOpen={isOpen}
+          onOpenChange={() => {
+            onOpenChange();
+            setCharacterForDeletion(undefined);
+          }}
+          handleDeleteCharacter={handleDeleteCharacter}
+          character={characterForDeletion}
+        />
+      )}
       <CardContainer>
         {allCharacters.length > 0 &&
           allCharacters.map((character) => {
             return (
               <Card className="max-w-[400px] mx-4 my-10" key={character.id}>
-                <DeleteCardModal
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  characterName={character.name}
-                  characterId={character.id}
-                  handleDeleteCharacter={handleDeleteCharacter}
-                />
                 <CardHeader className="flex flex-ROW items-center justify-center">
                   <p className="text-lg font-bold text-center">
                     {character.name}
@@ -133,6 +141,7 @@ export default function AnimeWiki() {
                       variant="ghost"
                       color="secondary"
                       onPress={onOpen}
+                      onClick={() => handleSetCharacterForDeletion(character)}
                     >
                       <RiDeleteBin6Line className="w-6 h-6" />
                     </Button>

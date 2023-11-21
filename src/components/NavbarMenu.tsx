@@ -4,7 +4,9 @@ import {
   NavbarContent,
   NavbarItem,
   Link,
+  Input,
 } from "@nextui-org/react";
+import { CiSearch } from "react-icons/ci";
 
 export default function NavbarMenu() {
   return (
@@ -31,7 +33,21 @@ export default function NavbarMenu() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent as="div" justify="end"></NavbarContent>
+      <NavbarContent as="div" justify="end">
+        <Input
+          classNames={{
+            base: "max-w-full sm:max-w-[10rem] h-10",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper:
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Type to search..."
+          size="sm"
+          startContent={<CiSearch className="w-6 h-6" />}
+          type="search"
+        />
+      </NavbarContent>
     </Navbar>
   );
 }
