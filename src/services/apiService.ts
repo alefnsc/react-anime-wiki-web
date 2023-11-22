@@ -21,7 +21,8 @@ export async function updateCharacter(character: iCharacter) {
   const response = await axios({
     method: "put",
     url: url,
-    data: { character },
+    data: character,
   });
+  console.log(response);
   return response.data;
 }

@@ -43,6 +43,14 @@ export default function AnimeWikiViewAllPage() {
       console.error("Error deleting character:", error);
     }
   }
+  const navigate = useNavigate();
+
+  const handleUpdateClick = (character: iCharacter) => {
+    // Pass the character object as props and redirect to the AnimiWikiUpdatePage
+    navigate(`${character.prefix}/update/`, {
+      state: { character: character },
+    });
+  };
 
   // async function handleUpdateCharacter(characterId: number) {
   //   console.log("Updating character with ID:", characterId);
@@ -207,7 +215,7 @@ export default function AnimeWikiViewAllPage() {
                       size="md"
                       variant="ghost"
                       color="secondary"
-                      onClick={() => 0}
+                      onClick={() => handleUpdateClick(character)}
                     >
                       <GrUpdate className="w-4 h-4" /> Update
                     </Button>

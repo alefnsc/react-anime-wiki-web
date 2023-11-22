@@ -32,6 +32,7 @@ export default function DeleteCardModal({
         backdrop:
           "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
       }}
+      isDismissable={false}
     >
       <ModalContent>
         {(onClose) => (
@@ -40,7 +41,7 @@ export default function DeleteCardModal({
               <CiWarning className="text-red-700 w-7 h-7 space-x-6" />
               Delete {character.name}
             </ModalHeader>
-            <ModalBody>
+            <ModalBody className="mx-4">
               <p>Are you sure that you want to delete this character?</p>
               <p>This action cannot be undone.</p>
             </ModalBody>
