@@ -10,6 +10,7 @@ import {
   Tab,
   Button,
   useDisclosure,
+  Spinner,
 } from "@nextui-org/react";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -33,6 +34,7 @@ export default function AnimeWikiViewAllPage() {
   const [characterForDeletion, setCharacterForDeletion] =
     useState<iCharacter>();
   const [searchValue, setSearchValue] = useState("");
+  const [loading, setLoading] = useState(true);
 
   async function handleDeleteCharacter(characterId: number) {
     console.log("Deleting character with ID:", characterId);
@@ -52,30 +54,13 @@ export default function AnimeWikiViewAllPage() {
     });
   };
 
-  // async function handleUpdateCharacter(characterId: number) {
-  //   console.log("Updating character with ID:", characterId);
-  //   try {
-  //     const updatedCharacter = allCharacters.find(
-  //       (character) => character.id === characterId
-  //     );
-  //     if (updatedCharacter) {
-  //       characterUpdatedCharacteristics.map((characteristics, index) => {
-
-  //         await updateCharacter(updatedCharacter); // Pass the updated character object to the updateCharacter function
-  //       const updatedCharacters = await getCharacters();
-  //       setAllCharacters(updatedCharacters);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating character:", error);
-  //   }
-  // }
-
   useEffect(() => {
     if (allCharacters.length > 0) return;
     async function getApiCharacters() {
       const response = await getCharacters();
       const data = [...response];
       setAllCharacters(data);
+      setLoading(false);
     }
 
     getApiCharacters();
@@ -127,8 +112,19 @@ export default function AnimeWikiViewAllPage() {
           character={characterForDeletion}
         />
       )}
+      {loading && (
+        <div className="flex flex-auto items-center justify-center h-full  my-10">
+          <Spinner
+            size="lg"
+            color="secondary"
+            labelColor="secondary"
+            label="Loading..."
+          />
+        </div>
+      )}
       <CardContainer>
-        {filteredCharacters.length > 0 &&
+        {!loading &&
+          filteredCharacters.length > 0 &&
           filteredCharacters.map((character) => {
             return (
               <Card className="max-w-[400px] mx-4 my-10" key={character.id}>
@@ -184,12 +180,6 @@ export default function AnimeWikiViewAllPage() {
                             </p>
                           </div>
                         </div>
-                        {/* <div className="flex flex-col">
-                          <b className="my-2">Description:</b>
-                          <p className=" text-justify">
-                            {character.description}
-                          </p>
-                        </div> */}
                       </CardBody>
                     </Tab>
                     <Tab title="Character">
