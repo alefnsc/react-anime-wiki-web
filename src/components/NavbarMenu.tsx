@@ -56,12 +56,12 @@ export default function NavbarMenu(props: iNavbarMenuProps) {
         </NavbarItem>
         <NavbarItem
           className="cursor-pointer"
-          isActive={location.pathname === "/import"}
+          isActive={location.pathname === "/create"}
         >
           <Link
-            onClick={() => handleNavigation("/import")}
+            onClick={() => handleNavigation("/create")}
             aria-current="page"
-            color={location.pathname === "/import" ? "secondary" : "foreground"}
+            color={location.pathname === "/create" ? "secondary" : "foreground"}
           >
             Import
           </Link>
