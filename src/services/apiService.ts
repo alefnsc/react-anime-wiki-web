@@ -1,7 +1,12 @@
 import axios from "axios";
-import { iCharacter } from "../pages/AnimeWikiViewAllPage";
+import { iCharacter } from "../types/character";
 
 const apiUrl = "http://localhost:3001/anime_characters";
+
+export async function createCharacter(character: iCharacter) {
+  const response = await axios.post(apiUrl, character);
+  return response.data;
+}
 
 export async function getCharacters() {
   const url = `${apiUrl}/?_sort=id,age`;

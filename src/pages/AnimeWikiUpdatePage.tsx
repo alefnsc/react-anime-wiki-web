@@ -5,18 +5,21 @@ import {
   Textarea,
   Button,
   Image,
+  Chip,
   useDisclosure,
 } from "@nextui-org/react";
 import NavbarMenu from "../components/NavbarMenu";
 import { FiSave } from "react-icons/fi";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { iCharacter } from "../types/character";
 import { updateCharacter } from "../services/apiService";
 import { useState } from "react";
-import UpdateCardModal from "../components/UpdateCardModal";
+import { FaAngleDoubleLeft } from "react-icons/fa";
+import InfoCardModal from "../components/InfoCardModal";
 
 export default function AnimeWikiUpdatePage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const character = location.state?.character as iCharacter;
   const [name, setName] = useState(character.name);
   const [prefix, setPrefix] = useState(character.prefix);
@@ -60,6 +63,18 @@ export default function AnimeWikiUpdatePage() {
     <>
       <NavbarMenu search={false} />
       <Card className="sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
+        <div className="float-left align-left justify-start items-start p-8  opacity-75 hover:opacity-100">
+          <Chip
+            className="cursor-pointer"
+            startContent={<FaAngleDoubleLeft />}
+            variant="flat"
+            size="lg"
+            color="secondary"
+            onClick={() => navigate("/characters")}
+          >
+            Back
+          </Chip>
+        </div>
         <CardBody className="flex items-center justify-center py-8">
           <Image
             className="h-full max-h-60  object-contain my-4"
@@ -139,7 +154,7 @@ export default function AnimeWikiUpdatePage() {
           </Button>
         </CardBody>
       </Card>
-      <UpdateCardModal
+      <InfoCardModal
         isOpen={isOpen}
         onOpenChange={onClose}
         characterName={name}
