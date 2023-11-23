@@ -4,12 +4,20 @@ import {
   Input,
   Textarea,
   Button,
-  // useDisclosure,
+  // Chip,
+  useDisclosure,
 } from "@nextui-org/react";
 import NavbarMenu from "../components/NavbarMenu";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { FiSave } from "react-icons/fi";
+
+import { createCharacter } from "../services/apiService";
+import InfoCardModal from "../components/InfoCardModal";
 // import { useLocation } from "react-router-dom";
-// import { iCharacter } from "../types/character";
+import { iCharacter } from "../types/character";
 
 import { useState } from "react";
 
@@ -17,22 +25,47 @@ import { ChangeEvent } from "react";
 
 export default function AnimeWikiUpdatePage() {
   // const location = useLocation();
-  // const [id, setId] = useState<number>();
   const [name, setName] = useState<string>("");
   const [characteristics, setCharacteristics] = useState<string>("");
   const [age, setAge] = useState<string>("");
   const [anime, setAnime] = useState<string>("");
   const [prefix, setPrefix] = useState<string>("");
-  // const [release, setRelease] = useState<number>(0);
+  const [release, setRelease] = useState<number>(0);
   const [director, setDirector] = useState<string>("");
   const [episodes, setEpisodes] = useState<string>("");
   const [publication, setPublication] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const handleIdChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const newId = parseInt(event.target.value);
-  //   setId(newId);
-  // };
+  const notify = (field: string) =>
+    toast.error(`${field} field is required!fieldUpper`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      theme: "light",
+    });
+
+  async function handleSaveCharacter(character: iCharacter) {
+    try {
+      const missingFields = Object.keys(character).filter(
+        (key) => character[key as keyof iCharacter] === ""
+      );
+      if (missingFields.length > 0) {
+        const fieldUpper =
+          missingFields[0].charAt(0).toUpperCase() + missingFields[0].slice(1);
+        notify(fieldUpper);
+        return;
+      } else {
+        await createCharacter(character);
+        return onOpen();
+      }
+    } catch (error) {
+      // Handle the error
+    }
+  }
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
@@ -61,10 +94,11 @@ export default function AnimeWikiUpdatePage() {
     setPrefix(newPrefix);
   };
 
-  // const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const newRelease = parseInt(event.target.value);
-  //   setRelease(newRelease);
-  // };
+  const handleReleaseChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newRelease = parseInt(event.target.value);
+
+    setRelease(newRelease);
+  };
 
   const handleDirectorChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newDirector = event.target.value;
@@ -91,17 +125,6 @@ export default function AnimeWikiUpdatePage() {
       <NavbarMenu search={false} />
       <Card className="sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
         <CardBody className="flex items-center justify-center py-8">
-          {/* <Input
-            type="number"
-            label="ID"
-            color="secondary"
-            variant="underlined"
-            value={id}
-            onChange={handleIdChange}
-            className="max-w-xs pb-4"
-            size="lg"
-          /> */}
-
           <Input
             type="text"
             label="Name"
@@ -111,8 +134,17 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleNameChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
-
+          <Input
+            type="file"
+            label="Image"
+            color="secondary"
+            variant="underlined"
+            className="max-w-xs pb-4"
+            size="lg"
+            required
+          />
           <Textarea
             variant="underlined"
             color="secondary"
@@ -122,6 +154,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleCharacteristicsChange}
             className="w-full max-w-xs pt-4"
             size="lg"
+            required
           />
 
           <Input
@@ -133,6 +166,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleAgeChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
           <Input
@@ -144,6 +178,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleAnimeChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
           <Input
@@ -155,18 +190,20 @@ export default function AnimeWikiUpdatePage() {
             onChange={handlePrefixChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
-          {/* <Input
+          <Input
             type="number"
             label="Release"
             color="secondary"
             variant="underlined"
-            value={release}
+            value={release.toString()}
             onChange={handleReleaseChange}
             className="max-w-xs pb-4"
             size="lg"
-          /> */}
+            required
+          />
 
           <Input
             type="text"
@@ -177,6 +214,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleDirectorChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
           <Input
@@ -188,6 +226,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleEpisodesChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
           <Input
@@ -199,6 +238,7 @@ export default function AnimeWikiUpdatePage() {
             onChange={handlePublicationChange}
             className="max-w-xs pb-4"
             size="lg"
+            required
           />
 
           <Textarea
@@ -210,22 +250,49 @@ export default function AnimeWikiUpdatePage() {
             onChange={handleDescriptionChange}
             className="w-full max-w-xs pt-4"
             size="lg"
+            required
           />
           <Button
             className="my-6"
             size="lg"
             color="secondary"
-            onClick={() => 0}
+            onClick={() =>
+              handleSaveCharacter({
+                name,
+                characteristics,
+                age,
+                anime,
+                prefix,
+                release,
+                director,
+                episodes,
+                publication,
+                description,
+              })
+            }
           >
             <FiSave className="w-6 h-6" /> Save
           </Button>
         </CardBody>
       </Card>
-      {/* <UpdateCardModal
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <InfoCardModal
         isOpen={isOpen}
         onOpenChange={onClose}
         characterName={name}
-      /> */}
+        isEditing={false}
+      />
     </>
   );
 }
