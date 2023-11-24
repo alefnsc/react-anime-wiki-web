@@ -77,7 +77,7 @@ export default function AnimeWikiUpdatePage() {
         </div>
         <CardBody className="flex items-center justify-center py-8">
           <Image
-            className="h-full max-h-60  object-contain my-4"
+            className="w-60 h-60 box-border object-cover my-4"
             alt={character.name}
             radius="sm"
             src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.prefix}.jpeg`}

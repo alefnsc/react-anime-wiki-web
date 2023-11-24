@@ -136,7 +136,7 @@ export default function AnimeWikiViewAllPage() {
                 <Divider />
                 <CardBody className="flex flex-col items-center justify-center">
                   <Image
-                    className="w-full h-40 box-border m-0 min-w-0 max-w-full object-cover"
+                    className="w-60 h-60 box-border object-cover"
                     alt={character.name}
                     radius="sm"
                     src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.prefix}.jpeg`}
