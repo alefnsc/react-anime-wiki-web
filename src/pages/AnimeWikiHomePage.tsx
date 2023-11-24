@@ -9,10 +9,10 @@ export default function AnimeWikiHomePage() {
   return (
     <>
       <NavbarMenu search={false} />
-      <div className=" m-auto max-w-[1200px] ">
+      <div className="my-10 m-auto max-w-[1200px] ">
         <Slider
           autoplay={true}
-          autoplaySpeed={4000}
+          autoplaySpeed={5000}
           dots={true}
           centerMode={false}
           centerPadding="0"
