@@ -16,7 +16,7 @@ function App() {
             path="/characters/:prefix/update"
             element={<AnimeWikiUpdate />}
           />
-          <Route path="/create" element={<AnimeWikiImportPage />} />
+          <Route path="/import" element={<AnimeWikiImportPage />} />
           <Route path="/characters" element={<AnimeWikiViewAll />} />
           <Route path="" element={<AnimeWikiHomePage />} />
         </Routes>
