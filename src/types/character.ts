@@ -10,4 +10,5 @@ export interface iCharacter {
   episodes: string;
   publication: string;
   description: string;
+  imageUrl: string;
 }

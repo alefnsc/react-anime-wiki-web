@@ -139,7 +139,7 @@ export default function AnimeWikiViewAllPage() {
                     className="w-60 h-60 box-border object-cover"
                     alt={character.name}
                     radius="sm"
-                    src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.prefix}.jpeg`}
+                    src={character.imageUrl}
                   />
                 </CardBody>
 

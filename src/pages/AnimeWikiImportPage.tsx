@@ -6,9 +6,10 @@ import {
   Button,
   // Chip,
   useDisclosure,
+  Progress,
 } from "@nextui-org/react";
 import NavbarMenu from "../components/NavbarMenu";
-
+import { IoClose } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -22,10 +23,14 @@ import { iCharacter } from "../types/character";
 import { useState } from "react";
 
 import { ChangeEvent } from "react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../services/firebaseService";
 
 export default function AnimeWikiUpdatePage() {
   // const location = useLocation();
   const [name, setName] = useState<string>("");
+  const [imgURL, setImgURL] = useState<string>("");
+  const [progress, setProgress] = useState<number>(0);
   const [characteristics, setCharacteristics] = useState<string>("");
   const [age, setAge] = useState<string>("");
   const [anime, setAnime] = useState<string>("");
@@ -38,7 +43,18 @@ export default function AnimeWikiUpdatePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const notify = (field: string) =>
-    toast.error(`${field} field is required!fieldUpper`, {
+    toast.error(`${field} field is required!`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      theme: "light",
+    });
+
+  const errNotify = (error: string) =>
+    toast.error(`${error}`, {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
@@ -63,13 +79,41 @@ export default function AnimeWikiUpdatePage() {
         return onOpen();
       }
     } catch (error) {
-      // Handle the error
+      errNotify(error as string);
     }
   }
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
     setName(newName);
+  };
+
+  const handleUploadChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const file = event.target.files?.[0];
+    if (file === null) return;
+
+    const storageRef = ref(storage, `images/${file?.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file!);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
+      },
+      (error) => {
+        alert(error.message);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log("File available at", url);
+          setImgURL(url);
+        });
+      }
+    );
   };
 
   const handleCharacteristicsChange = (
@@ -120,159 +164,210 @@ export default function AnimeWikiUpdatePage() {
     setDescription(newDescription);
   };
 
+  const handleImageDelete = () => {
+    setImgURL("");
+    setProgress(0);
+  };
+
   return (
     <>
       <NavbarMenu search={false} />
       <Card className="sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
         <CardBody className="flex items-center justify-center py-8">
-          <Input
-            type="text"
-            label="Name"
-            color="secondary"
-            variant="underlined"
-            value={name}
-            onChange={handleNameChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-          <Input
-            type="file"
-            label="Image"
-            color="secondary"
-            variant="underlined"
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-          <Textarea
-            variant="underlined"
-            color="secondary"
-            label="Characteristics"
-            labelPlacement="outside"
-            value={characteristics}
-            onChange={handleCharacteristicsChange}
-            className="w-full max-w-xs pt-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Age"
-            color="secondary"
-            variant="underlined"
-            value={age}
-            onChange={handleAgeChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Anime"
-            color="secondary"
-            variant="underlined"
-            value={anime}
-            onChange={handleAnimeChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Prefix"
-            color="secondary"
-            variant="underlined"
-            value={prefix}
-            onChange={handlePrefixChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="number"
-            label="Release"
-            color="secondary"
-            variant="underlined"
-            value={release.toString()}
-            onChange={handleReleaseChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Director"
-            color="secondary"
-            variant="underlined"
-            value={director}
-            onChange={handleDirectorChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Episodes"
-            color="secondary"
-            variant="underlined"
-            value={episodes}
-            onChange={handleEpisodesChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Input
-            type="text"
-            label="Publication"
-            color="secondary"
-            variant="underlined"
-            value={publication}
-            onChange={handlePublicationChange}
-            className="max-w-xs pb-4"
-            size="lg"
-            required
-          />
-
-          <Textarea
-            variant="underlined"
-            color="secondary"
-            label="Description"
-            labelPlacement="outside"
-            value={description}
-            onChange={handleDescriptionChange}
-            className="w-full max-w-xs pt-4"
-            size="lg"
-            required
-          />
-          <Button
-            className="my-6"
-            size="lg"
-            color="secondary"
-            onClick={() =>
-              handleSaveCharacter({
-                name,
-                characteristics,
-                age,
-                anime,
-                prefix,
-                release,
-                director,
-                episodes,
-                publication,
-                description,
-              })
-            }
+          <form
+            className="flex flex-col gap-5 w-full max-w-xs"
+            id="form"
+            name="form"
           >
-            <FiSave className="w-6 h-6" /> Save
-          </Button>
+            {imgURL != "" && progress == 100 && (
+              <div>
+                <div className="flex flex-col items-end">
+                  <IoClose
+                    className="w-10 h-10 cursor-pointer opacity-75 hover:opacity-100"
+                    onClick={handleImageDelete}
+                  />
+                </div>
+                <img
+                  src={imgURL}
+                  alt="uploaded"
+                  className="w-60 h-60 box-border object-cover m-auto rounded-2xl"
+                />
+              </div>
+            )}
+            <Input
+              type="text"
+              label="Name"
+              labelPlacement="outside"
+              placeholder="Character name"
+              color="secondary"
+              variant="bordered"
+              value={name}
+              onChange={handleNameChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              style={{ display: "block" }}
+              name="image"
+              placeholder="Select an image"
+              color="secondary"
+              variant="bordered"
+              className="max-w-xs pb-4"
+              size="lg"
+              onChange={handleUploadChange}
+              type="file"
+              isRequired
+            />
+
+            {progress != 0 && progress != 100 && (
+              <div className="flex flex-col gap-5 w-full max-w-xs">
+                <Progress
+                  color="secondary"
+                  aria-label="Loading..."
+                  value={progress}
+                />
+              </div>
+            )}
+            <Textarea
+              placeholder="Character characteristics"
+              color="secondary"
+              variant="bordered"
+              label="Characteristics"
+              labelPlacement="outside"
+              value={characteristics}
+              onChange={handleCharacteristicsChange}
+              className="w-full max-w-xs pt-4"
+              size="lg"
+              isRequired
+            />
+
+            <Input
+              type="text"
+              label="Age"
+              labelPlacement="outside"
+              placeholder="Character age"
+              color="secondary"
+              variant="bordered"
+              value={age}
+              onChange={handleAgeChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Anime"
+              labelPlacement="outside"
+              placeholder="Character anime"
+              color="secondary"
+              variant="bordered"
+              value={anime}
+              onChange={handleAnimeChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              labelPlacement="outside"
+              label="Prefix"
+              placeholder="Character prefix"
+              color="secondary"
+              variant="bordered"
+              value={prefix}
+              onChange={handlePrefixChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="number"
+              label="Release"
+              labelPlacement="outside"
+              placeholder="Anime release"
+              color="secondary"
+              variant="bordered"
+              value={release.toString()}
+              onChange={handleReleaseChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Director"
+              labelPlacement="outside"
+              placeholder="Anime director"
+              color="secondary"
+              variant="bordered"
+              value={director}
+              onChange={handleDirectorChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Episodes"
+              labelPlacement="outside"
+              placeholder="Anime episode number"
+              color="secondary"
+              variant="bordered"
+              value={episodes}
+              onChange={handleEpisodesChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Publication"
+              labelPlacement="outside"
+              placeholder="Anime publication range"
+              color="secondary"
+              variant="bordered"
+              value={publication}
+              onChange={handlePublicationChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Textarea
+              placeholder="Anime Description"
+              color="secondary"
+              variant="bordered"
+              label="Description"
+              labelPlacement="outside"
+              value={description}
+              onChange={handleDescriptionChange}
+              className="w-full max-w-xs pt-4"
+              size="lg"
+              isRequired
+            />
+            <Button
+              className="my-6"
+              size="lg"
+              color="secondary"
+              onClick={() => {
+                handleSaveCharacter({
+                  name,
+                  characteristics,
+                  age,
+                  anime,
+                  prefix,
+                  release,
+                  director,
+                  episodes,
+                  publication,
+                  description,
+                  imageUrl: imgURL,
+                });
+              }}
+            >
+              <FiSave className="w-6 h-6" /> Save
+            </Button>
+          </form>
         </CardBody>
       </Card>
       <ToastContainer
