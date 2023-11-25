@@ -8,7 +8,8 @@ export default function HomeCarousel() {
       <Slider
         autoplay={true}
         autoplaySpeed={5000}
-        dots={true}
+        dots={false}
+        arrows={true}
         centerMode={false}
         centerPadding="0"
         pauseOnDotsHover={false}
