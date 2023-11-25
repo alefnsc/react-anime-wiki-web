@@ -11,7 +11,7 @@ export default function AnimeWikiAboutPage() {
         <h1 className="text-purple-700 text-4xl font-bold mb-4">
           About AnimeWiki
         </h1>
-        <p className="text-gray-800 text-lg leading-relaxed mb-4">
+        <p className="text-gray-800 text-lg leading-relaxed mb-4 text-justify">
           AnimeWiki is a cutting-edge web application designed to be the
           ultimate destination for anime enthusiasts, providing a comprehensive
           and user-friendly platform to explore the vast world of anime.
@@ -134,9 +134,7 @@ export default function AnimeWikiAboutPage() {
           <li>Tailwind Merge</li>
           <li>TailwindCSS Animate</li>
         </ul>
-        <p bold className="mb-3 text-lg">
-          DevDependencies:
-        </p>
+        <p className="mb-3 text-lg font-bold">DevDependencies:</p>
         <ul className="list-inside list-disc mb-5">
           <li>TypeScript</li>
           <li>Vite</li>
