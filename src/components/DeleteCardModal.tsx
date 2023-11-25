@@ -52,7 +52,9 @@ export default function DeleteCardModal({
               <Button
                 color="secondary"
                 onPress={() => {
-                  handleDeleteCharacter(character.id);
+                  if (character?.id !== undefined) {
+                    handleDeleteCharacter(character.id);
+                  }
                   onOpenChange();
                 }}
               >
