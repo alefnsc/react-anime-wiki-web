@@ -26,7 +26,12 @@ export default function NavbarMenu(props: iNavbarMenuProps) {
   return (
     <Navbar className="border-b-1">
       <NavbarBrand>
-        <p className="font-bold text-inherit text-xl">AnimeWIKI</p>
+        <p
+          onClick={() => handleNavigation("/")}
+          className="font-bold text-inherit text-xl cursor-pointer"
+        >
+          AnimeWIKI
+        </p>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
