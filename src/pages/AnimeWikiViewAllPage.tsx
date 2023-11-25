@@ -1,29 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, SetStateAction, Dispatch } from "react";
+import { useDisclosure, Spinner } from "@nextui-org/react";
 
-import {
-  Card,
-  CardBody,
-  Image,
-  CardHeader,
-  Divider,
-  Tabs,
-  Tab,
-  Button,
-  useDisclosure,
-  Spinner,
-} from "@nextui-org/react";
-
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { GrUpdate } from "react-icons/gr";
+import { iCharacter } from "../types/character";
+import { deleteCharacter, getCharacters } from "../services/apiService";
 
 import NavbarMenu from "../components/NavbarMenu";
 import CardContainer from "../components/CardContainer";
 import DeleteCardModal from "../components/DeleteCardModal";
-import { deleteCharacter, getCharacters } from "../services/apiService";
-
-import { iCharacter } from "../types/character";
-
-import { useNavigate } from "react-router-dom";
+import CharacterCard from "../components/CharacterCard";
 import Footer from "../components/Footer";
 
 export default function AnimeWikiViewAllPage() {
@@ -32,8 +16,9 @@ export default function AnimeWikiViewAllPage() {
   const [filteredCharacters, setFilteredCharacters] = useState<iCharacter[]>(
     []
   );
-  const [characterForDeletion, setCharacterForDeletion] =
-    useState<iCharacter>();
+  const [characterForDeletion, setCharacterForDeletion] = useState<
+    iCharacter | undefined
+  >(undefined);
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -46,14 +31,6 @@ export default function AnimeWikiViewAllPage() {
       console.error("Error deleting character:", error);
     }
   }
-  const navigate = useNavigate();
-
-  const handleUpdateClick = (character: iCharacter) => {
-    // Pass the character object as props and redirect to the AnimiWikiUpdatePage
-    navigate(`${character.prefix}/update/`, {
-      state: { character: character },
-    });
-  };
 
   useEffect(() => {
     if (allCharacters.length > 0) return;
@@ -91,9 +68,11 @@ export default function AnimeWikiViewAllPage() {
     }
   }, [searchValue, allCharacters]);
 
-  function handleSetCharacterForDeletion(character: iCharacter) {
-    return setCharacterForDeletion(character);
-  }
+  const handleSetCharacterForDeletion: Dispatch<
+    SetStateAction<iCharacter | undefined>
+  > = (character) => {
+    setCharacterForDeletion(character);
+  };
 
   return (
     <>
@@ -128,99 +107,11 @@ export default function AnimeWikiViewAllPage() {
           filteredCharacters.length > 0 &&
           filteredCharacters.map((character) => {
             return (
-              <Card className="max-w-[400px] mx-4 my-10" key={character.id}>
-                <CardHeader className="flex flex-ROW items-center justify-center">
-                  <p className="text-lg font-bold text-center">
-                    {character.name}
-                  </p>
-                </CardHeader>
-                <Divider />
-                <CardBody className="flex flex-col items-center justify-center">
-                  <Image
-                    className="w-60 h-60 box-border object-cover"
-                    alt={character.name}
-                    radius="sm"
-                    src={character.imageUrl}
-                  />
-                </CardBody>
-
-                <CardBody className="flex flex-col items-center justify-center">
-                  <Tabs
-                    color="secondary"
-                    aria-label="Tabs colors"
-                    radius="full"
-                  >
-                    <Tab title="Anime">
-                      <CardBody>
-                        <div className="flex flex-col space-y-2">
-                          <div className="flex">
-                            <b className="w-1/3">Anime:</b>
-                            <p className="w-2/3">{character.anime}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Director:</b>
-                            <p className="w-2/3">{character.director}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Release:</b>
-                            <p className="w-2/3">{character.release}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Episodes:</b>
-                            <p className="w-2/3">{character.episodes}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Publication:</b>
-                            <p className="w-2/3">{character.publication}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Description:</b>
-                            <p className="w-2/3 text-justify">
-                              {character.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Tab>
-                    <Tab title="Character">
-                      <CardBody>
-                        <div className="flex flex-col space-y-2">
-                          <div className="flex">
-                            <b className="w-1/3">Age:</b>
-                            <p className="w-2/3">{character.age}</p>
-                          </div>
-                          <div className="flex">
-                            <b className="w-1/3">Description:</b>
-                            <p className="w-2/3 text-justify">
-                              {character.characteristics}
-                            </p>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Tab>
-                  </Tabs>
-                  <Divider />
-                  <CardBody className="flex flex-row items-center justify-center space-x-4">
-                    <Button
-                      size="md"
-                      variant="ghost"
-                      color="secondary"
-                      onClick={() => handleUpdateClick(character)}
-                    >
-                      <GrUpdate className="w-4 h-4" /> Update
-                    </Button>
-                    <Button
-                      size="md"
-                      variant="ghost"
-                      color="danger"
-                      onPress={onOpen}
-                      onClick={() => handleSetCharacterForDeletion(character)}
-                    >
-                      <RiDeleteBin6Line className="w-4 h-4" /> Delete
-                    </Button>
-                  </CardBody>
-                </CardBody>
-              </Card>
+              <CharacterCard
+                character={character}
+                deletion={handleSetCharacterForDeletion}
+                onOpen={onOpen}
+              />
             );
           })}
       </CardContainer>
