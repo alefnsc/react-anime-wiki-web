@@ -25,6 +25,7 @@ import { useState } from "react";
 import { ChangeEvent } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../services/firebaseService";
+import Footer from "../components/Footer";
 
 export default function AnimeWikiUpdatePage() {
   // const location = useLocation();
@@ -388,6 +389,7 @@ export default function AnimeWikiUpdatePage() {
         characterName={name}
         isEditing={false}
       />
+      <Footer />
     </>
   );
 }

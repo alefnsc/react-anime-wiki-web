@@ -16,6 +16,7 @@ import { updateCharacter } from "../services/apiService";
 import { useState } from "react";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import InfoCardModal from "../components/InfoCardModal";
+import Footer from "../components/Footer";
 
 export default function AnimeWikiUpdatePage() {
   const location = useLocation();
@@ -159,6 +160,7 @@ export default function AnimeWikiUpdatePage() {
         onOpenChange={onClose}
         characterName={name}
       />
+      <Footer />
     </>
   );
 }

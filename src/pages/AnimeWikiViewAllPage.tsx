@@ -24,6 +24,7 @@ import { deleteCharacter, getCharacters } from "../services/apiService";
 import { iCharacter } from "../types/character";
 
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function AnimeWikiViewAllPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -223,6 +224,7 @@ export default function AnimeWikiViewAllPage() {
             );
           })}
       </CardContainer>
+      <Footer />
     </>
   );
 }

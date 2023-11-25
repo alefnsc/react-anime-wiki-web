@@ -154,6 +154,8 @@ export default function AnimeWikiAboutPage() {
           and immerse themselves in the captivating world of anime.
         </p>
       </Card>
+
+      <Footer />
     </>
   );
 }

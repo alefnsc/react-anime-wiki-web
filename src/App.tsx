@@ -1,10 +1,11 @@
 import "./App.css";
 import AnimeWikiHomePage from "./pages/AnimeWikiHomePage";
-import AnimeWikiViewAll from "./pages/AnimeWikiViewAllPage";
+import AnimeWikiViewAllPage from "./pages/AnimeWikiViewAllPage";
 import AnimeWikiUpdate from "./pages/AnimeWikiUpdatePage";
 import ErrorPage from "./pages/ErrorPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AnimeWikiImportPage from "./pages/AnimeWikiImportPage";
+import AnimeWikiAboutPage from "./pages/AnimeWikiAboutPage";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             element={<AnimeWikiUpdate />}
           />
           <Route path="/import" element={<AnimeWikiImportPage />} />
-          <Route path="/characters" element={<AnimeWikiViewAll />} />
+          <Route path="/characters" element={<AnimeWikiViewAllPage />} />
+          <Route path="/about" element={<AnimeWikiAboutPage />} />
           <Route path="" element={<AnimeWikiHomePage />} />
         </Routes>
       </Router>

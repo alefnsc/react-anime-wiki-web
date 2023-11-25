@@ -3,6 +3,7 @@ import NavbarMenu from "../components/NavbarMenu";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Footer from "../components/Footer";
 
 export default function AnimeWikiHomePage() {
   return (
@@ -64,6 +65,7 @@ export default function AnimeWikiHomePage() {
           </div>
         </Slider>
       </div>
+      <Footer />
     </>
   );
 }
