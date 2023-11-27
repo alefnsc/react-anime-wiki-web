@@ -31,7 +31,10 @@ export default function AnimeWikiUpdatePage() {
   return (
     <>
       <NavbarMenu search={false} />
-      <Card className="sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
+      <Card className="p-10 sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
+        <h1 className="text-purple-700 text-4xl font-bold mb-4">
+          Create Character
+        </h1>
         <CardBody className="flex items-center justify-center py-8">
           <ImportForm
             onOpen={onOpen}

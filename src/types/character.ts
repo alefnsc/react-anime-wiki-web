@@ -1,14 +1,9 @@
 export interface iCharacter {
   id?: number;
   name: string;
-  anime: string;
-  age: string;
+  animeId: number;
+  age: number;
   characteristics: string;
   prefix: string;
-  release: number;
-  director: string;
-  episodes: string;
-  publication: string;
-  description: string;
   imageUrl: string;
 }

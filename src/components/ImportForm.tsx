@@ -1,21 +1,33 @@
-import { Input, Textarea, Button, Progress } from "@nextui-org/react";
+import {
+  Input,
+  Textarea,
+  Button,
+  Progress,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 
 import { IoClose } from "react-icons/io5";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FiSave } from "react-icons/fi";
 
-import { createCharacter } from "../services/apiService";
+import {
+  createAnime,
+  createCharacter,
+  getAnimes,
+} from "../services/apiService";
 
 import { iCharacter } from "../types/character";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ChangeEvent } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../services/firebaseService";
 
 import { toast } from "react-toastify";
+import { iAnime } from "../types/anime";
 
 interface ImportFormProps {
   onOpen: () => void;
@@ -32,14 +44,25 @@ export default function ImportForm({
   const [imgURL, setImgURL] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
   const [characteristics, setCharacteristics] = useState<string>("");
-  const [age, setAge] = useState<string>("");
+  const [age, setAge] = useState<number>(0);
   const [anime, setAnime] = useState<string>("");
+  const [animeId, setAnimeId] = useState<number>(0);
   const [prefix, setPrefix] = useState<string>("");
   const [release, setRelease] = useState<number>(0);
   const [director, setDirector] = useState<string>("");
-  const [episodes, setEpisodes] = useState<string>("");
+  const [episodes, setEpisodes] = useState<number>(0);
   const [publication, setPublication] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [animeName, setAnimeName] = useState<string>("");
+  const [allAnimes, setAllAnimes] = useState<iAnime[]>([]);
+
+  useEffect(() => {
+    const getAllAnimes = async () => {
+      const allAnimes = await getAnimes();
+      setAllAnimes(allAnimes);
+    };
+    getAllAnimes();
+  }, []);
 
   const notify = (field: string) =>
     toast.error(`${field} field is required!`, {
@@ -51,6 +74,27 @@ export default function ImportForm({
       draggable: true,
       theme: "light",
     });
+
+  async function handleSaveAnime(anime: iAnime) {
+    try {
+      const missingFields = Object.keys(anime).filter(
+        (key) => anime[key as keyof iAnime] === ""
+      );
+      if (missingFields.length > 0) {
+        const fieldUpper =
+          missingFields[0].charAt(0).toUpperCase() + missingFields[0].slice(1);
+        notify(fieldUpper);
+
+        return;
+      } else {
+        const id = await createAnime(anime);
+        setAnimeId(id);
+        return id;
+      }
+    } catch (error) {
+      errNotify(error as string);
+    }
+  }
 
   async function handleSaveCharacter(character: iCharacter) {
     try {
@@ -64,6 +108,7 @@ export default function ImportForm({
 
         return;
       } else {
+        console.log(character);
         await createCharacter(character);
         onCharacterName(name);
         return onOpen();
@@ -76,6 +121,11 @@ export default function ImportForm({
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
     setName(newName);
+  };
+
+  const handleAnimeNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const anime = event.target.value;
+    setAnimeName(anime);
   };
 
   const handleUploadChange: React.ChangeEventHandler<HTMLInputElement> = (
@@ -114,13 +164,13 @@ export default function ImportForm({
   };
 
   const handleAgeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newAge = event.target.value;
+    const newAge = Number(event.target.value);
     setAge(newAge);
   };
 
-  const handleAnimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newAnime = event.target.value;
-    setAnime(newAnime);
+  const handleAnimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const anime = event.target.value;
+    setAnime(anime);
   };
 
   const handlePrefixChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +190,7 @@ export default function ImportForm({
   };
 
   const handleEpisodesChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newEpisodes = event.target.value;
+    const newEpisodes = Number(event.target.value);
     setEpisodes(newEpisodes);
   };
 
@@ -162,7 +212,7 @@ export default function ImportForm({
   return (
     <>
       <form
-        className="flex flex-col gap-5 w-full max-w-xs"
+        className="flex-1 justify-center items-centerflex flex-col gap-5 w-full max-w-xs"
         id="form"
         name="form"
       >
@@ -230,31 +280,19 @@ export default function ImportForm({
         />
 
         <Input
-          type="text"
+          type="number"
           label="Age"
           labelPlacement="outside"
           placeholder="Character age"
           color="secondary"
           variant="bordered"
-          value={age}
+          value={age.toString()}
           onChange={handleAgeChange}
           className="max-w-xs pb-4"
           size="lg"
           isRequired
         />
-        <Input
-          type="text"
-          label="Anime"
-          labelPlacement="outside"
-          placeholder="Character anime"
-          color="secondary"
-          variant="bordered"
-          value={anime}
-          onChange={handleAnimeChange}
-          className="max-w-xs pb-4"
-          size="lg"
-          isRequired
-        />
+
         <Input
           type="text"
           labelPlacement="outside"
@@ -268,88 +306,155 @@ export default function ImportForm({
           size="lg"
           isRequired
         />
-        <Input
-          type="number"
-          label="Release"
-          labelPlacement="outside"
-          placeholder="Anime release"
+
+        <Select
           color="secondary"
           variant="bordered"
-          value={release.toString()}
-          onChange={handleReleaseChange}
-          className="max-w-xs pb-4"
-          size="lg"
           isRequired
-        />
-        <Input
-          type="text"
-          label="Director"
           labelPlacement="outside"
-          placeholder="Anime director"
-          color="secondary"
-          variant="bordered"
-          value={director}
-          onChange={handleDirectorChange}
-          className="max-w-xs pb-4"
+          label="Anime"
+          placeholder="Select an Anime"
+          defaultSelectedKeys={["default"]}
+          className="max-w-xs"
           size="lg"
-          isRequired
-        />
-        <Input
-          type="text"
-          label="Episodes"
-          labelPlacement="outside"
-          placeholder="Anime episode number"
-          color="secondary"
-          variant="bordered"
-          value={episodes}
-          onChange={handleEpisodesChange}
-          className="max-w-xs pb-4"
-          size="lg"
-          isRequired
-        />
-        <Input
-          type="text"
-          label="Publication"
-          labelPlacement="outside"
-          placeholder="Anime publication range"
-          color="secondary"
-          variant="bordered"
-          value={publication}
-          onChange={handlePublicationChange}
-          className="max-w-xs pb-4"
-          size="lg"
-          isRequired
-        />
-        <Textarea
-          placeholder="Anime Description"
-          color="secondary"
-          variant="bordered"
-          label="Description"
-          labelPlacement="outside"
-          value={description}
-          onChange={handleDescriptionChange}
-          className="w-full max-w-xs pt-4"
-          size="lg"
-          isRequired
-        />
+          value={anime}
+          onChange={handleAnimeChange}
+        >
+          <SelectItem isDisabled key="default" value="Select an Anime">
+            Select an Anime
+          </SelectItem>
+          <SelectItem key="new" value="new">
+            New
+          </SelectItem>
+          {allAnimes.map((animeSelect) => (
+            <SelectItem key={animeSelect.id!} value={animeSelect.id}>
+              {animeSelect.name}
+            </SelectItem>
+          ))}
+        </Select>
+        {anime == "new" && (
+          <>
+            <h1 className="text-purple-700 text-xl font-bold my-10">
+              Create a new Anime
+            </h1>
+
+            <Input
+              type="text"
+              label="Name"
+              labelPlacement="outside"
+              placeholder="Anime name"
+              color="secondary"
+              variant="bordered"
+              value={animeName}
+              onChange={handleAnimeNameChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="number"
+              label="Release Year"
+              labelPlacement="outside"
+              placeholder="Anime release"
+              color="secondary"
+              variant="bordered"
+              value={release.toString()}
+              onChange={handleReleaseChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Director"
+              labelPlacement="outside"
+              placeholder="Anime director"
+              color="secondary"
+              variant="bordered"
+              value={director}
+              onChange={handleDirectorChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Episodes"
+              labelPlacement="outside"
+              placeholder="Anime episode number"
+              color="secondary"
+              variant="bordered"
+              value={episodes.toString()}
+              onChange={handleEpisodesChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Input
+              type="text"
+              label="Publication"
+              labelPlacement="outside"
+              placeholder="Anime publication range"
+              color="secondary"
+              variant="bordered"
+              value={publication}
+              onChange={handlePublicationChange}
+              className="max-w-xs pb-4"
+              size="lg"
+              isRequired
+            />
+            <Textarea
+              placeholder="Anime Description"
+              color="secondary"
+              variant="bordered"
+              label="Description"
+              labelPlacement="outside"
+              value={description}
+              onChange={handleDescriptionChange}
+              className="w-full max-w-xs pt-4"
+              size="lg"
+              isRequired
+            />
+          </>
+        )}
+
         <Button
-          className="my-6"
+          className=" my-6"
           size="lg"
           color="secondary"
           onClick={() => {
-            handleSaveCharacter({
-              name,
-              characteristics,
-              age,
-              anime,
-              prefix,
-              release,
-              director,
-              episodes,
-              publication,
-              description,
-              imageUrl: imgURL,
-            });
+            if (anime === "new") {
+              handleSaveAnime({
+                name: animeName,
+                release,
+                director,
+                episodes,
+                publication,
+                description,
+              })
+                .then(({ id }) => {
+                  handleSaveCharacter({
+                    name,
+                    characteristics,
+                    age,
+                    animeId: id,
+                    prefix,
+                    imageUrl: imgURL,
+                  });
+                })
+                .catch((error) => {
+                  errNotify(error as string);
+                });
+            } else {
+              handleSaveCharacter({
+                name,
+                characteristics,
+                age,
+                animeId: animeId,
+                prefix,
+                imageUrl: imgURL,
+              });
+            }
           }}
         >
           <FiSave className="w-6 h-6" /> Save
