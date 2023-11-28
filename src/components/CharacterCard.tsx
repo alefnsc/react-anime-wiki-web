@@ -61,28 +61,28 @@ export default function CharacterCard({
                 <div className="flex flex-col space-y-2">
                   <div className="flex">
                     <b className="w-1/3">Anime:</b>
-                    <p className="w-2/3">{character.anime}</p>
+                    <p className="w-2/3">{character.anime?.name}</p>
                   </div>
                   <div className="flex">
                     <b className="w-1/3">Director:</b>
-                    <p className="w-2/3">{character.director}</p>
+                    <p className="w-2/3">{character.anime?.director}</p>
                   </div>
                   <div className="flex">
                     <b className="w-1/3">Release:</b>
-                    <p className="w-2/3">{character.release}</p>
+                    <p className="w-2/3">{character.anime?.release}</p>
                   </div>
                   <div className="flex">
                     <b className="w-1/3">Episodes:</b>
-                    <p className="w-2/3">{character.episodes}</p>
+                    <p className="w-2/3">{character.anime?.episodes}</p>
                   </div>
                   <div className="flex">
                     <b className="w-1/3">Publication:</b>
-                    <p className="w-2/3">{character.publication}</p>
+                    <p className="w-2/3">{character.anime?.publication}</p>
                   </div>
                   <div className="flex">
                     <b className="w-1/3">Description:</b>
                     <p className="w-2/3 text-justify">
-                      {character.description}
+                      {character.anime?.description}
                     </p>
                   </div>
                 </div>

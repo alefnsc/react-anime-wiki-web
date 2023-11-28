@@ -2,7 +2,10 @@ import { useEffect, useState, SetStateAction, Dispatch } from "react";
 import { useDisclosure, Spinner } from "@nextui-org/react";
 
 import { iCharacter } from "../types/character";
-import { deleteCharacter, getCharacters } from "../services/apiService";
+import {
+  deleteCharacter,
+  getCharactersWithAnime,
+} from "../services/apiService";
 
 import NavbarMenu from "../components/NavbarMenu";
 import CardContainer from "../components/CardContainer";
@@ -35,8 +38,9 @@ export default function AnimeWikiViewAllPage() {
   useEffect(() => {
     if (allCharacters.length > 0) return;
     async function getApiCharacters() {
-      const response = await getCharacters();
+      const response = await getCharactersWithAnime();
       const data = [...response];
+      console.log(data);
       setAllCharacters(data);
       setLoading(false);
     }

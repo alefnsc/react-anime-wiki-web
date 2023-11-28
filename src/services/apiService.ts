@@ -46,3 +46,9 @@ export async function createAnime(anime: iAnime) {
   console.log(response.data);
   return response.data;
 }
+
+export async function getCharactersWithAnime() {
+  const url = `${apiUrl}/charactersWithAnime?_sort=id,age`;
+  const response = await axios.get(url);
+  return response.data;
+}
