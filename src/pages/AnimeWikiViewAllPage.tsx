@@ -120,6 +120,16 @@ export default function AnimeWikiViewAllPage() {
           />
         </div>
       )}
+      {!loading && filteredCharacters.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-full  my-10">
+          <p className=" md:text-2xl lg:text-3xl font-semibold text-gray-500 mb-4">
+            No characters found for this search.
+          </p>
+          <p className=" md:text-l lg:text-xl text-gray-500">
+            Create a new one on Import page!
+          </p>
+        </div>
+      )}
       <CardContainer>
         {!loading &&
           filteredCharacters.length > 0 &&
@@ -134,6 +144,7 @@ export default function AnimeWikiViewAllPage() {
             );
           })}
       </CardContainer>
+
       <Footer />
     </>
   );
