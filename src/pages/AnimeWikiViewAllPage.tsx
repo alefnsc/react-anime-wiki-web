@@ -55,9 +55,27 @@ export default function AnimeWikiViewAllPage() {
           if (typeof character[field as keyof iCharacter] === "string") {
             const fieldValue = character[field as keyof iCharacter] as string;
             if (fieldValue.toLowerCase().includes(searchValue.toLowerCase())) {
-              return fieldValue
-                .toLowerCase()
-                .includes(searchValue.toLowerCase());
+              return true;
+            }
+          } else if (typeof character[field as keyof iCharacter] === "object") {
+            const nestedFields = character[field as keyof iCharacter];
+            for (const nestedField in nestedFields) {
+              if (
+                typeof nestedFields[
+                  nestedField as keyof typeof nestedFields
+                ] === "string"
+              ) {
+                const nestedFieldValue = nestedFields[
+                  nestedField as keyof typeof nestedFields
+                ] as string;
+                if (
+                  nestedFieldValue
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                ) {
+                  return true;
+                }
+              }
             }
           }
         }
