@@ -131,6 +131,7 @@ export default function AnimeWikiViewAllPage() {
                 character={character}
                 deletion={handleSetCharacterForDeletion}
                 onOpen={onOpen}
+                key={character.id}
               />
             );
           })}
