@@ -59,10 +59,30 @@ export default function ImportForm({
   useEffect(() => {
     const getAllAnimes = async () => {
       const allAnimes = await getAnimes();
+
       setAllAnimes(allAnimes);
     };
     getAllAnimes();
   }, []);
+
+  const selectAnimes = [];
+
+  selectAnimes.push(
+    <SelectItem isDisabled key="default" value="Select an Anime">
+      Select an Anime
+    </SelectItem>,
+    <SelectItem key="new" value="new">
+      New
+    </SelectItem>
+  );
+
+  allAnimes.forEach((animeSelect) => {
+    selectAnimes.push(
+      <SelectItem key={animeSelect.id!} value={animeSelect.id}>
+        {animeSelect.name}
+      </SelectItem>
+    );
+  });
 
   const notify = (field: string) =>
     toast.error(`${field} field is required!`, {
@@ -209,10 +229,44 @@ export default function ImportForm({
     setProgress(0);
   };
 
+  const handleSaveButtonClick = async () => {
+    if (anime === "new") {
+      try {
+        const { id } = await handleSaveAnime({
+          name: animeName,
+          release,
+          director,
+          episodes,
+          publication,
+          description,
+        });
+        await handleSaveCharacter({
+          name,
+          characteristics,
+          age,
+          animeId: id,
+          prefix,
+          imageUrl: imgURL,
+        });
+      } catch (error) {
+        errNotify(error as string);
+      }
+    } else {
+      handleSaveCharacter({
+        name,
+        characteristics,
+        age,
+        animeId: animeId,
+        prefix,
+        imageUrl: imgURL,
+      });
+    }
+  };
+
   return (
     <>
       <form
-        className="flex-1 justify-center items-centerflex flex-col gap-5 w-full max-w-xs"
+        className="flex-1 justify-center items-center flex flex-col gap-5 w-full max-w-xs"
         id="form"
         name="form"
       >
@@ -320,17 +374,7 @@ export default function ImportForm({
           value={anime}
           onChange={handleAnimeChange}
         >
-          <SelectItem isDisabled key="default" value="Select an Anime">
-            Select an Anime
-          </SelectItem>
-          <SelectItem key="new" value="new">
-            New
-          </SelectItem>
-          {allAnimes.map((animeSelect) => (
-            <SelectItem key={animeSelect.id!} value={animeSelect.id}>
-              {animeSelect.name}
-            </SelectItem>
-          ))}
+          {selectAnimes}
         </Select>
         {anime == "new" && (
           <>
@@ -419,43 +463,10 @@ export default function ImportForm({
         )}
 
         <Button
-          className=" my-6"
+          className="my-6"
           size="lg"
           color="secondary"
-          onClick={() => {
-            if (anime === "new") {
-              handleSaveAnime({
-                name: animeName,
-                release,
-                director,
-                episodes,
-                publication,
-                description,
-              })
-                .then(({ id }) => {
-                  handleSaveCharacter({
-                    name,
-                    characteristics,
-                    age,
-                    animeId: id,
-                    prefix,
-                    imageUrl: imgURL,
-                  });
-                })
-                .catch((error) => {
-                  errNotify(error as string);
-                });
-            } else {
-              handleSaveCharacter({
-                name,
-                characteristics,
-                age,
-                animeId: animeId,
-                prefix,
-                imageUrl: imgURL,
-              });
-            }
-          }}
+          onClick={handleSaveButtonClick}
         >
           <FiSave className="w-6 h-6" /> Save
         </Button>
