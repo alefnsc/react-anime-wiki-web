@@ -12,6 +12,7 @@ import CardContainer from "../components/CardContainer";
 import DeleteCardModal from "../components/DeleteCardModal";
 import CharacterCard from "../components/CharacterCard";
 import Footer from "../components/Footer";
+import { iAnime } from "../types/anime";
 
 export default function AnimeWikiViewAllPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -57,19 +58,15 @@ export default function AnimeWikiViewAllPage() {
             if (fieldValue.toLowerCase().includes(searchValue.toLowerCase())) {
               return true;
             }
-          } else if (typeof character[field as keyof iCharacter] === "object") {
-            const nestedFields = character[field as keyof iCharacter];
-            for (const nestedField in nestedFields) {
-              if (
-                typeof nestedFields[
-                  nestedField as keyof typeof nestedFields
-                ] === "string"
-              ) {
-                const nestedFieldValue = nestedFields[
-                  nestedField as keyof typeof nestedFields
+          } else if (field === "anime") {
+            const animeFields = character[field as keyof iCharacter] as iAnime;
+            for (const animeField in animeFields) {
+              if (typeof animeFields[animeField as keyof iAnime] === "string") {
+                const animeFieldValue = animeFields[
+                  animeField as keyof iAnime
                 ] as string;
                 if (
-                  nestedFieldValue
+                  animeFieldValue
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
                 ) {
@@ -82,6 +79,7 @@ export default function AnimeWikiViewAllPage() {
         return false;
       });
     }
+
     if (searchValue !== "") {
       const filteredCharacters = filterCharacters();
       setFilteredCharacters(filteredCharacters);
