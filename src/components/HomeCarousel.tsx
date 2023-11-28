@@ -20,7 +20,7 @@ export default function HomeCarousel() {
       >
         <div>
           <img
-            src="https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/Banner%20para%20Twitch%20M%C3%BAsica%20de%20Anime%20Violeta%20Azul-escuro.png?v=1700850893037"
+            src="https://firebasestorage.googleapis.com/v0/b/afonseca-animewiki.appspot.com/o/images%2FBanner%20para%20Twitch%20M%C3%BAsica%20de%20Anime%20Violeta%20Azul-escuro.png?alt=media&token=ba5519d9-c4b4-4ef6-bc1d-8fcfc17f8bb3"
             alt="Welcome Banner"
           />
 
@@ -34,7 +34,7 @@ export default function HomeCarousel() {
         </div>
         <div>
           <img
-            src="https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/Banner%20para%20Twitch%20de%20Podcast%20Estilo%20Anime%20em%20Vermelho%2C%20Preto%20e%20Branco%20(1).png?v=1700851342529"
+            src="https://firebasestorage.googleapis.com/v0/b/afonseca-animewiki.appspot.com/o/images%2FBanner%20para%20Twitch%20de%20Podcast%20Estilo%20Anime%20em%20Vermelho%2C%20Preto%20e%20Branco%20(1).png?alt=media&token=38cbaa04-204a-454e-a38f-3f65706ea149"
             alt="Info Banner"
           />
 
@@ -48,7 +48,7 @@ export default function HomeCarousel() {
         </div>
         <div>
           <img
-            src="https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/Banner%20para%20Twitch%20de%20Podcast%20Estilo%20Anime%20em%20Vermelho%2C%20Preto%20e%20Branco.png?v=1700850893648"
+            src="https://firebasestorage.googleapis.com/v0/b/afonseca-animewiki.appspot.com/o/images%2FBanner%20para%20Twitch%20de%20Podcast%20Estilo%20Anime%20em%20Vermelho%2C%20Preto%20e%20Branco.png?alt=media&token=65b4521c-7955-4a4d-a93c-75fc7f474062"
             alt="Warning Banner"
           />
 
