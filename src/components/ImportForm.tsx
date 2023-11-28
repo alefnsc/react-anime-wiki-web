@@ -45,8 +45,7 @@ export default function ImportForm({
   const [progress, setProgress] = useState<number>(0);
   const [characteristics, setCharacteristics] = useState<string>("");
   const [age, setAge] = useState<number>(0);
-  const [anime, setAnime] = useState<string>("");
-  const [animeId, setAnimeId] = useState<number>(0);
+  const [animeId, setAnimeId] = useState<number>();
   const [prefix, setPrefix] = useState<string>("");
   const [release, setRelease] = useState<number>(0);
   const [director, setDirector] = useState<string>("");
@@ -71,7 +70,7 @@ export default function ImportForm({
     <SelectItem isDisabled key="default" value="Select an Anime">
       Select an Anime
     </SelectItem>,
-    <SelectItem key="new" value="new">
+    <SelectItem key="new" value={0}>
       New
     </SelectItem>
   );
@@ -128,7 +127,6 @@ export default function ImportForm({
 
         return;
       } else {
-        console.log(character);
         await createCharacter(character);
         onCharacterName(name);
         return onOpen();
@@ -188,9 +186,12 @@ export default function ImportForm({
     setAge(newAge);
   };
 
-  const handleAnimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const anime = event.target.value;
-    setAnime(anime);
+  const handleSelectAnimeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (event.target.value === "new") {
+      setAnimeId(0);
+    } else {
+      setAnimeId(Number(event.target.value));
+    }
   };
 
   const handlePrefixChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -230,7 +231,7 @@ export default function ImportForm({
   };
 
   const handleSaveButtonClick = async () => {
-    if (anime === "new") {
+    if (animeId && animeId === 0) {
       try {
         const { id } = await handleSaveAnime({
           name: animeName,
@@ -251,7 +252,7 @@ export default function ImportForm({
       } catch (error) {
         errNotify(error as string);
       }
-    } else {
+    } else if (animeId && animeId !== 0) {
       handleSaveCharacter({
         name,
         characteristics,
@@ -371,12 +372,12 @@ export default function ImportForm({
           defaultSelectedKeys={["default"]}
           className="max-w-xs"
           size="lg"
-          value={anime}
-          onChange={handleAnimeChange}
+          value={animeId}
+          onChange={handleSelectAnimeChange}
         >
           {selectAnimes}
         </Select>
-        {anime == "new" && (
+        {animeId && animeId === 0 && (
           <>
             <h1 className="text-purple-700 text-xl font-bold my-10">
               Create a new Anime

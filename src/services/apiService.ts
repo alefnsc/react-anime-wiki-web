@@ -2,7 +2,7 @@ import axios from "axios";
 import { iCharacter } from "../types/character";
 import { iAnime } from "../types/anime";
 
-const apiUrl = "https://anime-wiki-api.onrender.com";
+const apiUrl = "http://localhost:3333";
 
 export async function createCharacter(character: iCharacter) {
   const url = `${apiUrl}/characters`;
@@ -41,9 +41,7 @@ export async function getAnimes() {
 
 export async function createAnime(anime: iAnime) {
   const url = `${apiUrl}/animes`;
-  console.log(anime);
   const response = await axios.post(url, anime);
-  console.log(response.data);
   return response.data;
 }
 
