@@ -5,7 +5,11 @@ import {
   NavbarItem,
   Link,
   Input,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
 } from "@nextui-org/react";
+import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -15,16 +19,59 @@ interface iNavbarMenuProps {
   search?: boolean;
 }
 
-export default function NavbarMenu(props: iNavbarMenuProps) {
+export default function NavbarMenuUI(props: iNavbarMenuProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNavigation = (route: string) => {
     navigate(route);
   };
 
   return (
-    <Navbar className="border-b-1">
+    <Navbar className="border-b-1" onMenuOpenChange={setIsMenuOpen}>
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="sm:hidden"
+      />
+      <NavbarMenu>
+        <NavbarMenuItem>
+          <Link
+            color={location.pathname === "/" ? "secondary" : "foreground"}
+            onClick={() => handleNavigation("/")}
+            className="w-full cursor-pointer"
+            size="lg"
+          >
+            Home
+          </Link>
+          <Link
+            color={
+              location.pathname === "/characters" ? "secondary" : "foreground"
+            }
+            onClick={() => handleNavigation("/characters")}
+            className="w-full cursor-pointer"
+            size="lg"
+          >
+            View
+          </Link>
+          <Link
+            color={location.pathname === "/import" ? "secondary" : "foreground"}
+            onClick={() => handleNavigation("/import")}
+            className="w-full cursor-pointer"
+            size="lg"
+          >
+            Import
+          </Link>
+          <Link
+            color={location.pathname === "/about" ? "secondary" : "foreground"}
+            onClick={() => handleNavigation("/about")}
+            className="w-full cursor-pointer"
+            size="lg"
+          >
+            About
+          </Link>
+        </NavbarMenuItem>
+      </NavbarMenu>
       <NavbarBrand>
         <p
           onClick={() => handleNavigation("/")}

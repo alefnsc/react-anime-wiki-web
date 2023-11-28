@@ -7,7 +7,7 @@ import {
   getCharactersWithAnime,
 } from "../services/apiService";
 
-import NavbarMenu from "../components/NavbarMenu";
+import NavbarMenuUI from "../components/NavbarMenuUI";
 import CardContainer from "../components/CardContainer";
 import DeleteCardModal from "../components/DeleteCardModal";
 import CharacterCard from "../components/CharacterCard";
@@ -96,7 +96,7 @@ export default function AnimeWikiViewAllPage() {
 
   return (
     <>
-      <NavbarMenu
+      <NavbarMenuUI
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         search={true}

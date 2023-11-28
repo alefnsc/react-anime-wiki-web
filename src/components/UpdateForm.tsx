@@ -32,11 +32,12 @@ export default function UpdateForm({
   const [characteristics, setCharacteristics] = useState(
     character.characteristics
   );
-  const [description, setDescription] = useState(character.description);
 
   async function handleSaveCharacter(character: iCharacter) {
     try {
-      await updateCharacter(character);
+      const { anime, ...filteredCharacter } = character;
+      console.log("Saving character:", filteredCharacter);
+      await updateCharacter(filteredCharacter);
       onCharacterName(character.name);
       return onOpen();
     } catch (error) {
@@ -53,15 +54,11 @@ export default function UpdateForm({
   }
 
   function handleSetAge(event: React.ChangeEvent<HTMLInputElement>) {
-    setAge(event.target.value);
+    setAge(Number(event.target.value));
   }
 
   function handleSetCharacteristcs(event: React.ChangeEvent<HTMLInputElement>) {
     setCharacteristics(event.target.value);
-  }
-
-  function handleSetDescription(event: React.ChangeEvent<HTMLInputElement>) {
-    setDescription(event.target.value);
   }
 
   return (
@@ -109,11 +106,11 @@ export default function UpdateForm({
           />
 
           <Input
-            type="text"
+            type="number"
             label="Age"
             color="secondary"
             variant="underlined"
-            value={age}
+            value={age.toString()}
             onChange={handleSetAge}
             className="max-w-xs pb-4"
             size="lg"
@@ -125,16 +122,6 @@ export default function UpdateForm({
             labelPlacement="outside"
             value={characteristics}
             onChange={handleSetCharacteristcs}
-            className="w-full max-w-xs pt-4"
-            size="lg"
-          />
-          <Textarea
-            variant="underlined"
-            color="secondary"
-            label="Description"
-            labelPlacement="outside"
-            value={description}
-            onChange={handleSetDescription}
             className="w-full max-w-xs pt-4"
             size="lg"
           />
@@ -150,7 +137,6 @@ export default function UpdateForm({
                 prefix,
                 age,
                 characteristics,
-                description,
               } as iCharacter)
             }
           >

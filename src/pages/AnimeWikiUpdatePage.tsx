@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDisclosure } from "@nextui-org/react";
-import NavbarMenu from "../components/NavbarMenu";
+import NavbarMenuUI from "../components/NavbarMenuUI";
 import { useLocation } from "react-router-dom";
 import { iCharacter } from "../types/character";
 
@@ -20,7 +20,7 @@ export default function AnimeWikiUpdatePage() {
   };
   return (
     <>
-      <NavbarMenu search={false} />
+      <NavbarMenuUI search={false} />
       <UpdateForm
         onOpen={onOpen}
         character={character}

@@ -1,4 +1,4 @@
-import NavbarMenu from "../components/NavbarMenu";
+import NavbarMenuUI from "../components/NavbarMenuUI";
 import Footer from "../components/Footer";
 import { Card } from "@nextui-org/react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
@@ -6,7 +6,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 export default function AnimeWikiAboutPage() {
   return (
     <>
-      <NavbarMenu />
+      <NavbarMenuUI />
       <Card className=" p-10 rounded-lgsm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
         <h1 className="text-purple-700 text-4xl font-bold mb-4">
           About AnimeWiki

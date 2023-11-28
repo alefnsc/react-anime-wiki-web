@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Card, CardBody, useDisclosure } from "@nextui-org/react";
-import NavbarMenu from "../components/NavbarMenu";
+import NavbarMenuUI from "../components/NavbarMenuUI";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,7 +30,7 @@ export default function AnimeWikiUpdatePage() {
 
   return (
     <>
-      <NavbarMenu search={false} />
+      <NavbarMenuUI search={false} />
       <Card className="p-10 sm:max-w-[300px] md:max-w-[600px] lg:max-w-[800px] m-auto mt-10">
         <h1 className="text-purple-700 text-4xl font-bold mb-4">
           Create Character
