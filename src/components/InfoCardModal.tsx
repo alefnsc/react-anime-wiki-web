@@ -45,7 +45,8 @@ export default function InfoCardModal({
                 <Button
                   color="secondary"
                   onPress={() => {
-                    isEditing ? onClose() : navigate("/characters");
+                    onClose();
+                    navigate("/characters");
                   }}
                 >
                   Close

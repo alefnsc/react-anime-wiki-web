@@ -35,9 +35,17 @@ export default function UpdateForm({
 
   async function handleSaveCharacter(character: iCharacter) {
     try {
-      const { anime, ...filteredCharacter } = character;
-      console.log("Saving character:", filteredCharacter);
-      await updateCharacter(filteredCharacter);
+      const { id, name, animeId, age, characteristics, prefix, imageUrl } =
+        character;
+      await updateCharacter({
+        id,
+        name,
+        animeId,
+        age,
+        characteristics,
+        prefix,
+        imageUrl,
+      });
       onCharacterName(character.name);
       return onOpen();
     } catch (error) {
@@ -81,7 +89,7 @@ export default function UpdateForm({
             className="w-60 h-60 box-border object-cover my-4"
             alt={character.name}
             radius="sm"
-            src={`https://cdn.glitch.global/54d79ea1-4c28-497a-b9e1-670d3e73941d/${character.prefix}.jpeg`}
+            src={character.imageUrl}
           />
           <Input
             value={name}
