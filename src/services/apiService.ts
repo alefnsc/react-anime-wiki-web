@@ -2,7 +2,7 @@ import axios from "axios";
 import { iCharacter } from "../types/character";
 import { iAnime } from "../types/anime";
 
-const apiUrl = "http://localhost:3333";
+const apiUrl = "https://anime-wiki-api.onrender.com";
 
 export async function createCharacter(character: iCharacter) {
   const url = `${apiUrl}/characters`;
