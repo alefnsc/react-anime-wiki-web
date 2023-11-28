@@ -27,7 +27,6 @@ export default function AnimeWikiViewAllPage() {
   const [loading, setLoading] = useState(true);
 
   async function handleDeleteCharacter(characterId: number) {
-    console.log("Deleting character with ID:", characterId);
     try {
       await deleteCharacter(characterId);
       setAllCharacters([]);
@@ -41,7 +40,6 @@ export default function AnimeWikiViewAllPage() {
     async function getApiCharacters() {
       const response = await getCharactersWithAnime();
       const data = [...response];
-      console.log(data);
       setAllCharacters(data);
       setLoading(false);
     }
