@@ -7,6 +7,8 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 
+import { IoCloudUploadOutline } from "react-icons/io5";
+
 import { IoClose } from "react-icons/io5";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -149,20 +151,27 @@ export default function ImportForm({
   const handleUploadChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
+    if (event.target.files?.length === 0) return;
     const file = event.target.files?.[0];
+    console.log(file);
     if (file === null) return;
 
     const storageRef = ref(storage, `images/${file?.name}`);
+    console.log(storageRef);
     const uploadTask = uploadBytesResumable(storageRef, file!);
+
+    console.log(uploadTask);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(progress);
         setProgress(progress);
       },
       (error) => {
+        console.log(error.message);
         alert(error.message);
       },
       () => {
@@ -299,20 +308,28 @@ export default function ImportForm({
           size="lg"
           isRequired
         />
-        <Input
-          style={{ display: "block" }}
-          name="image"
+        <Button className="my-6 " size="lg" color="secondary">
+          <label
+            className="flex flex-row items-center justify-center w-full max-w-xs"
+            htmlFor="file"
+          >
+            <IoCloudUploadOutline className="w-8 h-8 pr-2" />
+            Select Character Image
+          </label>
+        </Button>
+        <input
+          id="file"
+          name="file"
+          style={{ display: "none" }}
           placeholder="Select an image"
-          color="secondary"
-          variant="bordered"
-          className="max-w-xs pb-4"
-          size="lg"
+          className="text-gray-600 font-extralight max-w-xs pb-4 rounded-xl border px-3 py-4 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent hover:border-gray-700 hover:shadow-xs transition duration-500 ease-in-out focus:border-purple-600"
           onChange={handleUploadChange}
           type="file"
-          isRequired
+          required
+          aria-label="File browser example"
         />
 
-        {progress != 0 && progress != 100 && (
+        {progress > 0 && progress < 100 && (
           <div className="flex flex-col gap-5 w-full max-w-xs">
             <Progress
               color="secondary"
