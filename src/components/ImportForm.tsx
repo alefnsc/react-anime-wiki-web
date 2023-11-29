@@ -394,7 +394,7 @@ export default function ImportForm({
         >
           {selectAnimes}
         </Select>
-        {animeId && animeId === 0 && (
+        {animeId === 0 && (
           <>
             <h1 className="text-purple-700 text-xl font-bold my-10">
               Create a new Anime
