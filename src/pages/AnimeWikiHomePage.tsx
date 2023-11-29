@@ -6,7 +6,7 @@ export default function AnimeWikiHomePage() {
   return (
     <>
       <NavbarMenuUI search={false} />
-      <div className="my-10 m-auto max-w-[1200px] ">
+      <div className="my-10 min-h-[75vh]  m-auto max-w-[1200px] ">
         <HomeCarousel />
       </div>
       <Footer />

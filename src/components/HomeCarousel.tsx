@@ -18,7 +18,7 @@ export default function HomeCarousel() {
         slidesToShow={1}
         slidesToScroll={1}
       >
-        <div>
+        <div className="space-y-6">
           <img
             src="https://firebasestorage.googleapis.com/v0/b/afonseca-animewiki.appspot.com/o/images%2FBanner%20para%20Twitch%20M%C3%BAsica%20de%20Anime%20Violeta%20Azul-escuro.png?alt=media&token=ba5519d9-c4b4-4ef6-bc1d-8fcfc17f8bb3"
             alt="Welcome Banner"
