@@ -10,40 +10,6 @@ The AnimeWiki project is a full-stack application that allows users to explore a
 
 [CodeUp 180D Challenge - View Progress](https://github.com/alefnsc/CodeUp-180D/blob/main/180-days-of-code/log.md)
 
-### Dependencies
-
-- **@nextui-org/react:** ^2.2.9
-- **@types/tailwindcss:** ^3.1.0
-- **axios:** ^1.6.2
-- **clsx:** ^2.0.0
-- **firebase:** ^10.6.0
-- **react:** ^18.2.0
-- **react-dom:** ^18.2.0
-- **react-icons:** ^4.12.0
-- **react-router-dom:** ^6.19.0
-- **react-slick:** ^0.29.0
-- **react-toastify:** ^9.1.3
-- **slick-carousel:** ^1.8.1
-- **tailwind-merge:** ^2.0.0
-- **tailwindcss-animate:** ^1.0.7
-
-### DevDependencies
-
-- **@types/node:** ^20.9.2
-- **@types/react:** ^18.2.37
-- **@types/react-dom:** ^18.2.15
-- **@types/react-slick:** ^0.23.12
-- **@typescript-eslint/eslint-plugin:** ^6.10.0
-- **@typescript-eslint/parser:** ^6.10.0
-- **@vitejs/plugin-react:** ^4.2.0
-- **autoprefixer:** ^10.4.16
-- **eslint:** ^8.53.0
-- **eslint-plugin-react-hooks:** ^4.6.0
-- **eslint-plugin-react-refresh:** ^0.4.4
-- **postcss:** ^8.4.31
-- **tailwindcss:** ^3.3.5
-- **typescript:** ^5.2.2
-- **vite:** ^5.0.0
 
 ## Pages
 
@@ -96,6 +62,42 @@ To run the project locally:
 1. Clone the repository.
 2. Install dependencies using `npm install`.
 3. Run the application using `npm start` or `npm run dev` for development.
+
+
+### Dependencies
+
+- **@nextui-org/react:** ^2.2.9
+- **@types/tailwindcss:** ^3.1.0
+- **axios:** ^1.6.2
+- **clsx:** ^2.0.0
+- **firebase:** ^10.6.0
+- **react:** ^18.2.0
+- **react-dom:** ^18.2.0
+- **react-icons:** ^4.12.0
+- **react-router-dom:** ^6.19.0
+- **react-slick:** ^0.29.0
+- **react-toastify:** ^9.1.3
+- **slick-carousel:** ^1.8.1
+- **tailwind-merge:** ^2.0.0
+- **tailwindcss-animate:** ^1.0.7
+
+### DevDependencies
+
+- **@types/node:** ^20.9.2
+- **@types/react:** ^18.2.37
+- **@types/react-dom:** ^18.2.15
+- **@types/react-slick:** ^0.23.12
+- **@typescript-eslint/eslint-plugin:** ^6.10.0
+- **@typescript-eslint/parser:** ^6.10.0
+- **@vitejs/plugin-react:** ^4.2.0
+- **autoprefixer:** ^10.4.16
+- **eslint:** ^8.53.0
+- **eslint-plugin-react-hooks:** ^4.6.0
+- **eslint-plugin-react-refresh:** ^0.4.4
+- **postcss:** ^8.4.31
+- **tailwindcss:** ^3.3.5
+- **typescript:** ^5.2.2
+- **vite:** ^5.0.0
 
 ## Contact
 
