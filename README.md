@@ -48,11 +48,11 @@ The AnimeWiki project is a full-stack application that allows users to explore a
 ## Pages
 
 - **AnimeWikiHomePage:** A simple page with a carousel, and footer.
-- 
+  
   ![HomePage](/src/assets/home-desktop.png)
 
 - **AnimeWikiViewAllPage:** A gallery which display imported characters, their photos, and anime information. Provide the ability to update or delete characters, and search by keyword of any attribute.
-- 
+  
   ![ViewAllPage](/src/assets/view-all-desktop.png)
 
 - **AnimeWikiImportPage:** A create form that gives the ability to upload character photo, input its attributes, and select or create a new anime information to associate with character.
