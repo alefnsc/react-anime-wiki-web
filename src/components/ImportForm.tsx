@@ -102,9 +102,8 @@ export default function ImportForm({
 
   const validateFields = (object: iCharacter | iAnime) => {
     let missingFields: string[];
-    const isCurrentAnime = isAnime(object);
-    console.log(isCurrentAnime);
-    if (isCurrentAnime) {
+
+    if (isAnime(object)) {
       missingFields = Object.keys(object).filter(
         (key) => (object as iAnime)[key as keyof iAnime] === ""
       );
