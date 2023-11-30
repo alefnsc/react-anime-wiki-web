@@ -96,6 +96,34 @@ export default function ImportForm({
       theme: "light",
     });
 
+  function isAnime(object: iCharacter | iAnime): object is iAnime {
+    return (object as iAnime).release !== undefined;
+  }
+
+  const validateFields = (object: iCharacter | iAnime) => {
+    let missingFields: string[];
+    const isCurrentAnime = isAnime(object);
+    console.log(isCurrentAnime);
+    if (isCurrentAnime) {
+      missingFields = Object.keys(object).filter(
+        (key) => (object as iAnime)[key as keyof iAnime] === ""
+      );
+    } else {
+      missingFields = Object.keys(object).filter(
+        (key) => (object as iCharacter)[key as keyof iCharacter] === ""
+      );
+    }
+
+    if (missingFields.length > 0) {
+      const fieldUpper =
+        missingFields[0].charAt(0).toUpperCase() + missingFields[0].slice(1);
+
+      errNotify(`Required field is missing: ${fieldUpper}`);
+      return false;
+    }
+    return true;
+  };
+
   async function handleSaveAnime(anime: iAnime) {
     try {
       const missingFields = Object.keys(anime).filter(
@@ -119,19 +147,12 @@ export default function ImportForm({
 
   async function handleSaveCharacter(character: iCharacter) {
     try {
-      const missingFields = Object.keys(character).filter(
-        (key) => character[key as keyof iCharacter] === ""
-      );
-      if (missingFields.length > 0) {
-        const fieldUpper =
-          missingFields[0].charAt(0).toUpperCase() + missingFields[0].slice(1);
-        notify(fieldUpper);
-
-        return;
-      } else {
-        await createCharacter(character);
+      const createdCharacter = await createCharacter(character);
+      if (createdCharacter) {
         onCharacterName(name);
         return onOpen();
+      } else {
+        return errNotify("Character already exists");
       }
     } catch (error) {
       errNotify(error as string);
@@ -152,31 +173,27 @@ export default function ImportForm({
     event
   ) => {
     if (event.target.files?.length === 0) return;
+
     const file = event.target.files?.[0];
-    console.log(file);
+
     if (file === null) return;
 
     const storageRef = ref(storage, `images/${file?.name}`);
-    console.log(storageRef);
-    const uploadTask = uploadBytesResumable(storageRef, file!);
 
-    console.log(uploadTask);
+    const uploadTask = uploadBytesResumable(storageRef, file!);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress);
         setProgress(progress);
       },
       (error) => {
-        console.log(error.message);
         alert(error.message);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log("File available at", url);
           setImgURL(url);
         });
       }
@@ -240,8 +257,26 @@ export default function ImportForm({
   };
 
   const handleSaveButtonClick = async () => {
-    if (animeId && animeId === 0) {
-      try {
+    try {
+      const isValid = validateFields({
+        name,
+        characteristics,
+        age,
+        animeId: 0,
+        prefix,
+        imageUrl: imgURL,
+      });
+      if (!isValid) return;
+      if (animeId === 0) {
+        const isValidAnime = validateFields({
+          name: animeName,
+          release,
+          director,
+          episodes,
+          publication,
+          description,
+        });
+        if (!isValidAnime) return;
         const { id } = await handleSaveAnime({
           name: animeName,
           release,
@@ -258,18 +293,20 @@ export default function ImportForm({
           prefix,
           imageUrl: imgURL,
         });
-      } catch (error) {
-        errNotify(error as string);
+      } else if (animeId! > 0) {
+        handleSaveCharacter({
+          name,
+          characteristics,
+          age,
+          animeId: animeId!,
+          prefix,
+          imageUrl: imgURL,
+        });
+      } else {
+        errNotify("Required Field is missing: Anime");
       }
-    } else if (animeId && animeId !== 0) {
-      handleSaveCharacter({
-        name,
-        characteristics,
-        age,
-        animeId: animeId,
-        prefix,
-        imageUrl: imgURL,
-      });
+    } catch (error) {
+      errNotify(error as string);
     }
   };
 
@@ -297,7 +334,7 @@ export default function ImportForm({
         )}
         <Input
           type="text"
-          label="Name"
+          label="Character Name"
           labelPlacement="outside"
           placeholder="Character name"
           color="secondary"
@@ -402,7 +439,7 @@ export default function ImportForm({
 
             <Input
               type="text"
-              label="Name"
+              label="Anime Name"
               labelPlacement="outside"
               placeholder="Anime name"
               color="secondary"

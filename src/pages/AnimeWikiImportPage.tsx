@@ -10,7 +10,7 @@ import InfoCardModal from "../components/InfoCardModal";
 import Footer from "../components/Footer";
 import ImportForm from "../components/ImportForm";
 
-export default function AnimeWikiUpdatePage() {
+export default function AnimeWikiImportPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [characterName, setCharacterName] = useState("");
 
