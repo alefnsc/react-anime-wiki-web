@@ -10,6 +10,60 @@ The AnimeWiki project is a full-stack application that allows users to explore a
 
 [CodeUp 180D Challenge - View Progress](https://github.com/alefnsc/CodeUp-180D/blob/main/180-days-of-code/log.md)
 
+
+## Pages
+
+- **AnimeWikiHomePage:** A simple page with a carousel, and footer.
+  
+  ![HomePage](/src/assets/home-desktop.png)
+
+- **AnimeWikiViewAllPage:** A gallery which display imported characters, their photos, and anime information. Provide the ability to update or delete characters, and search by keyword of any attribute.
+  
+  ![ViewAllPage](/src/assets/view-all-desktop.png)
+
+- **AnimeWikiImportPage:** A create form that gives the ability to upload character photo, input its attributes, and select or create a new anime information to associate with character.
+
+![ImportPage](/src/assets/import-desktop.png)
+
+- **AnimeWikiUpdatePage:** An update form which provide the ability to update exclusevely the character attributes.
+
+![UpdatePage](/src/assets/update-desktop.png)
+
+- **AnimeWikiAboutPage:** An overview page of the technologies/stacks used on the application.
+
+![AboutPage](/src/assets/about-desktop.png)
+
+## Components
+
+The frontend is integrated with the [AnimeWiki API](https://github.com/alefnsc/react-anime-wiki-api), providing a seamless user experience. Notable features and fixes include:
+
+- **NavbarMenuUI:** a navbar with search included, and mobile responsiveness to minimize/maximize based on screen size.
+
+- **HomeCarousel:** a banner carousel tha display different images and texts along time.
+
+- **CardContainer:** a container to wrap CharacterCard renderizations.
+
+- **CharacterCard:** a card to wrap Character information.
+
+- **DeleteCardModal:** a modal that appear upon delete button click.
+
+- **UpdateForm:** a form with the functionality to update character information.
+
+- **InfoCardModal:** a abstract modal used to both creation and update actions.
+
+- **Footer:** a simple footer that displays copyright info in all pages.
+
+- **ImportForm:** a form with the functionality to create character information, upload photos, and create/select animes.
+
+## How to Run Locally
+
+To run the project locally:
+
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Run the application using `npm start` or `npm run dev` for development.
+
+
 ### Dependencies
 
 - **@nextui-org/react:** ^2.2.9
@@ -44,56 +98,6 @@ The AnimeWiki project is a full-stack application that allows users to explore a
 - **tailwindcss:** ^3.3.5
 - **typescript:** ^5.2.2
 - **vite:** ^5.0.0
-
-## Pages
-
-- **AnimeWikiHomePage:** A simple page with a carousel, and footer.
-  ![HomePage](assets/home-desktop.png)
-
-- **AnimeWikiViewAllPage:** A gallery which display imported characters, their photos, and anime information. Provide the ability to update or delete characters, and search by keyword of any attribute.
-  ![ViewAllPage](assets/view-all-desktop.png)
-
-- **AnimeWikiImportPage:** A create form that gives the ability to upload character photo, input its attributes, and select or create a new anime information to associate with character.
-
-![ImportPage](assets/import-desktop.png)
-
-- **AnimeWikiUpdatePage:** An update form which provide the ability to update exclusevely the character attributes.
-
-![UpdatePage](assets/update-desktop.png)
-
-- **AnimeWikiAboutPage:** An overview page of the technologies/stacks used on the application.
-
-![AboutPage](assets/about-desktop.png)
-
-## Components
-
-The frontend is integrated with the [AnimeWiki API](https://github.com/alefnsc/react-anime-wiki-api), providing a seamless user experience. Notable features and fixes include:
-
-- **NavbarMenuUI:** a navbar with search included, and mobile responsiveness to minimize/maximize based on screen size.
-
-- **HomeCarousel:** a banner carousel tha display different images and texts along time.
-
-- **CardContainer:** a container to wrap CharacterCard renderizations.
-
-- **CharacterCard:** a card to wrap Character information.
-
-- **DeleteCardModal:** a modal that appear upon delete button click.
-
-- **UpdateForm:** a form with the functionality to update character information.
-
-- **InfoCardModal:** a abstract modal used to both creation and update actions.
-
-- **Footer:** a simple footer that displays copyright info in all pages.
-
-- **ImportForm:** a form with the functionality to create character information, upload photos, and create/select animes.
-
-## How to Run Locally
-
-To run the project locally:
-
-1. Clone the repository.
-2. Install dependencies using `npm install`.
-3. Run the application using `npm start` or `npm run dev` for development.
 
 ## Contact
 
