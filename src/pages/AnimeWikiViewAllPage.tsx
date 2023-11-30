@@ -122,10 +122,10 @@ export default function AnimeWikiViewAllPage() {
       )}
       {!loading && filteredCharacters.length === 0 && (
         <div className="flex flex-col items-center justify-center h-full  my-10">
-          <p className=" md:text-2xl lg:text-3xl font-semibold text-gray-500 mb-4">
+          <p className=" sm:text-lg md:text-2xl lg:text-3xl font-semibold text-gray-500 mb-4">
             No characters found for this search.
           </p>
-          <p className=" md:text-l lg:text-xl text-gray-500">
+          <p className="sm:text-medium md:text-lg lg:text-xl text-gray-500">
             Create a new one on Import page!
           </p>
         </div>
