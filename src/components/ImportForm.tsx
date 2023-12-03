@@ -146,13 +146,9 @@ export default function ImportForm({
 
   async function handleSaveCharacter(character: iCharacter) {
     try {
-      const createdCharacter = await createCharacter(character);
-      if (createdCharacter) {
-        onCharacterName(name);
-        return onOpen();
-      } else {
-        return errNotify("Character already exists");
-      }
+      await createCharacter(character);
+      onCharacterName(name);
+      return onOpen();
     } catch (error) {
       errNotify(error as string);
     }
